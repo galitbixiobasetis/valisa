@@ -1,0 +1,24 @@
+ 
+[
+  {
+    "validMail": {
+      "perA": {
+        "message": "recipient@example.com"
+      },
+      "de": {
+        "message": "from@example.com"
+      },
+      "visualitadors": {
+        "message": "visualizer@example.com"
+      },
+      "assumpte": {
+        "message": "Valid Subject"
+      },
+      "cos": {
+        "message": "This is a valid body."
+      }
+    }
+  }
+]
+
+ 

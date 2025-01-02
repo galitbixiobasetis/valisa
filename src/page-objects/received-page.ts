@@ -1,7 +1,8 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { MailComponent } from './mail';
+import { MailComponent } from './mail-component';
+import { MAILBOX_URL } from '../utils/config';
 
-export class RebutsPage {
+export class ReceivedPage {
  
     readonly page: Page; 
     readonly viwerMode: Locator;
@@ -19,6 +20,10 @@ export class RebutsPage {
         this.filterTabArchived = page.getByRole('button', { name: 'Arxivades' });
         
     }
+    async validateURL(){
+       await expect(this.page).toHaveURL(MAILBOX_URL, { timeout: 10000 });
+    }
+
 
     async activateViewerMode(): Promise<boolean> {
         await this.viwerMode.click();
@@ -45,13 +50,28 @@ export class RebutsPage {
     async clickOnFilterTabAll() {
         await this.filterTabAll.click();
     }
+
+    async getAllMailList(): Promise<MailComponent[]> {
+        await this.clickOnFilterTabAll();
+        return await this.getMailList(new MailComponent(this.page).mailItem);
+    }
         
     async clickOnFilterTabPending() {
         await this.filterTabPending.click();
     }
 
+    async getPendingMaillist() {
+        await this.clickOnFilterTabPending();
+        return await this.getMailList(new MailComponent(this.page).mailItem);
+    }
+
     async clickOnFilterTabArchived() {
         await this.filterTabArchived.click();
+    }
+
+    async getArchivedMailList() {
+        await this.clickOnFilterTabArchived();
+        return await this.getMailList(new MailComponent(this.page).mailItem);
     }
     
     }

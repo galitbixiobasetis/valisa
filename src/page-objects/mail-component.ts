@@ -20,6 +20,7 @@ export class MailComponent {
    this.visibilityIcon = page.locator('[data-testid="VisibilityIcon"]');
    this.mailItem =  page.locator('.css-19b90io');
    }
+ 
 
    async isMailVisible(): Promise<boolean> {
       return await this.mailItem.isVisible();  

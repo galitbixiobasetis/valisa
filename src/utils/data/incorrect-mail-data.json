@@ -1,0 +1,23 @@
+[
+  {
+    "invalidMail": {
+      "perA": {
+        "message": "mailtest.com"
+      },
+      "de": {
+        "message": "mailtest.com"
+      },
+      "visualitadors": {
+        "message": "mailtest.com"
+      },
+      "assumpte": {
+        "message": ""
+      },
+      "cos": {
+        "message": ""
+      }
+    }
+  }
+]
+
+ 

@@ -39,7 +39,7 @@ export interface ValidMail {
  }
  
  export interface CorrectMailData {
-  invalidMail: InvalidMail;
+  validMail: ValidMail;
  }
  
  export async function getCorrectMailData(): Promise<CorrectMailData[]> {

@@ -22,6 +22,8 @@ export class NewMailPage {
   
    constructor(page: Page) {
    this.page = page;
+   this.newMailTitle = page.getByRole('heading', { name: 'Nova valisa' })
+
    this.toField =  page.locator('input#perA'); 
    this.toFieldOptions = page.locator('.MuiAutocomplete-listbox .MuiAutocomplete-option');  
    this.chip = page.getByRole('button', { name: 'Valisa4 Usuari' })
@@ -30,16 +32,22 @@ export class NewMailPage {
    this.visualizersField = page.locator('role=combobox[name="Visualitzadors"]');
 
    this.fromField = page.getByRole('combobox', { name: 'De *' })
+
    this.subjectField = page.locator('#assumpte')
+
    this.contentField = page.locator('#cos')
+
    this.signatureField = page.getByLabel('Peu signatura')
+
    this.sendNewMailButton = page.getByRole('button', { name: 'Enviar' })
    this.saveMailButton = page.getByRole('button', { name: 'Desar' })
+
    this.step1 = page.getByRole('button', { name: 'Formularis' })
    this.step2 = page.getByRole('button', { name: 'Documentació' })
+
    this.errorIcon = page.locator('[data-testid="WarningIcon"]'); 
    this.errorInput = page.locator('[id="perA-helper-text"]');
-   this.newMailTitle = page.getByRole('heading', { name: 'Nova valisa' })
+   
    }
 
    async validateURL(){
@@ -81,8 +89,7 @@ export class NewMailPage {
       await this.visualizersField.fill(value);
    }
 
-
-
+   
    async clickFromField(): Promise<void> {
       await this.fromField.click();
    }

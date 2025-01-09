@@ -3,7 +3,7 @@ import * as allure from "allure-js-commons";
 import { NewMailPage } from '../../page-objects/pages/new-mail-page';
 import { SidebarMenuComponent } from '../../page-objects/components/sidebar-menu-component';
 import {TestFunctions, getCorrectMailData } from '../../utils/test-functions';
-import { SentMailPage } from '../../page-objects/pages/sent-mail-page';
+import { SentMailPage } from '../../page-objects/pages/sent-mail-page'; 
   
 
 test.beforeEach(async ({ page }) => {
@@ -57,12 +57,14 @@ test('should send email after filling required fields', async ({ page }) => {
 
         await page.waitForTimeout(5000);
 
+
         await sentMailPage.validateURL();
     });
 
-    // await allure.step('should return sent mail list on sent page', async () => {
-    //    await sentMailPage.validateSentMailList();
+    
 
-    // });
+ 
 });
-});
+
+
+  });

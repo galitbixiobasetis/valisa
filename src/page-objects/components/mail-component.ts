@@ -12,7 +12,8 @@ export class MailComponent {
   
    constructor(page: Page) {
    this.page = page;
-    this.mailCheckbox = page.getByRole('checkbox').first()
+   this.mailList = page.locator('div:nth-child(5) > div > div > div ');
+   this.mailCheckbox = page.getByRole('checkbox').first()
    this.mailFavoriteCheckbox = page.getByRole('checkbox').nth(1)
    this.recipientLabel = page.getByLabel('De:Valisa1 Usuari Proves')
    this.remitentLabel = page.getByLabel('De:Valisa1 Usuari Proves')

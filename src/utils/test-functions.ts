@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export class TestFunctions {
+    
   static async goToUrl(page: Page, path: string = '/'): Promise<number> {
      let responseStatus: number | undefined;
 

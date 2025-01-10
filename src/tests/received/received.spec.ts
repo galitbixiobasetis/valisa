@@ -3,7 +3,8 @@ import { ReceivedPage } from '../../page-objects/pages/received-page';
 import { MailComponent } from '../../page-objects/components/mail-component';
 import { TestFunctions } from '../../utils/test-functions';
 import { BASE_URL, LANDING_PAGE } from '../../utils/config';
-
+import * as allure from "allure-js-commons";
+ 
  
 test.beforeEach(async ({ page }) => {
     await TestFunctions.goToUrl(page, '');  
@@ -16,7 +17,7 @@ test.describe('Mailbox navigation', () => {
         expect(responseStatus).toBe(404); 
         });
       
-      test('should redirect to mailbox when accessing landing page', async ({ page }) => {
+    test('should redirect to mailbox when accessing landing page', async ({ page }) => {
         const receivedPage = new ReceivedPage(page);
 
          await page.goto(LANDING_PAGE);
@@ -24,45 +25,41 @@ test.describe('Mailbox navigation', () => {
          await page.waitForLoadState();  
          await receivedPage.validateURL();
          });
+
+
+        test ('Mailbox tabs functionality', async ({ page }) => { 
+            const receivedPage = new ReceivedPage(page);
+            await allure.step('should list all mails in "All" tab or show empty state', async () => {
+                await receivedPage.clickOnFilterTabAll();
+                expect (await receivedPage.getAllMailList()).toBeTruthy();
+            });
+            await allure.step('should display only unmanaged emails in the "No gestionados" tab', async () => {
+                await receivedPage.clickOnFilterTabPending();
+                expect (await receivedPage.getPendingMaillist()).toBeTruthy();      
+            });
+            await allure.step('should display archived emails in the "Archivados" tab', async () => {
+                await receivedPage.clickOnFilterTabArchived();
+                expect (await receivedPage.getArchivedMailList()).toBeTruthy();      
+            });
+        });
 });
 
-test.describe('Mailbox tabs functionality', () => {
-    test('should list all mails in "All" tab or show empty state', async ({ page }) => {
-        const receivedPage = new ReceivedPage(page);
-        await receivedPage.clickOnFilterTabAll();
-        expect (await receivedPage.getAllMailList()).toBeTruthy();
-    });
+test('Viewer Mode Functionality', async ({ page }) => {
 
-    test('should display only unmanaged emails in the "No gestionados" tab', async ({ page }) => { 
-        const receivedPage = new ReceivedPage(page);
-        await receivedPage.clickOnFilterTabPending();
-        expect (await receivedPage.getPendingMaillist()).toBeTruthy();      
-     });
-    
-    test('should display archived emails in the "Archivados" tab', async ({ page }) => { 
-        const receivedPage = new ReceivedPage(page);
-        await receivedPage.clickOnFilterTabArchived();
-        expect (await receivedPage.getArchivedMailList()).toBeTruthy();      
+    const receivedPage = new ReceivedPage(page);
+    const mail = new MailComponent(page);
 
-        
-     });
-  });
- 
-test.describe('Viewer Mode Functionality', () => {
-    
-    test('should activate the viewer mode when clicking on "Mostra visualitzador"', async ({ page }) => {
-        const receivedPage = new ReceivedPage(page);
+    await allure.step('should activate the viewer mode when clicking on "Mostra visualitzador"', async () => {
+
         if (!(await receivedPage.isViewerModeActive())) {
             await receivedPage.activateViewerMode();
         } 
 
         expect(await receivedPage.isViewerModeActive()).toBeTruthy();
         
-     });
+    });
 
-    test('should show the visibility icon when the viewer mode is active', async ({ page }) => {
-        const receivedPage = new ReceivedPage(page);
-        const mail = new MailComponent(page);
+    await allure.step('should show the visibility icon when the viewer mode is active', async () => {
     
         if (!(await receivedPage.isViewerModeActive())) {
             await receivedPage.activateViewerMode();
@@ -77,17 +74,16 @@ test.describe('Viewer Mode Functionality', () => {
         const viewerMailComponents = mailContainers.filter(mailComponent => mailComponent.isMailForViewerVisible());
 
         for (const viewerMailComponent of viewerMailComponents) {
-            await expect(viewerMailComponent.visibilityIcon).toBeVisible();
+            await expect(viewerMailComponent.visibilityIcon.first()).toBeVisible(); 
         }
 
         } else {
             console.log('No emails were found for viewer mode.');
         }
     });
+   
+    await allure.step('should deactivate susccesfully viewer mode when clicking on "Mostra visualitzador"', async () => {
  
-    test('should deactivate susccesfully viewer mode when clicking on "Mostra visualitzador"', async ({ page }) => {
-        const receivedPage = new ReceivedPage(page);
-    
         await receivedPage.activateViewerMode();
     
         await receivedPage.deactivateViewerMode();

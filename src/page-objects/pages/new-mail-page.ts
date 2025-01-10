@@ -145,6 +145,7 @@ export class NewMailPage {
 
 
    async sendNewMail(): Promise<void> {
+ 
       await this.sendNewMailButton.click();
    }
 

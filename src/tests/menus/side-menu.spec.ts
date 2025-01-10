@@ -124,7 +124,7 @@ test.describe('Lateral menu navigation', () => {
      const configPage = new ConfigPage(page);
      const sidebarMenu = new SidebarMenuComponent(page);
 
-     await allure.step('click on config button', async() => {
+        await allure.step('click on config button', async() => {
             await sidebarMenu.navigateToConfig();
             await configPage.validateURL();
         }

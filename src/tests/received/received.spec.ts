@@ -28,6 +28,7 @@ test.describe('Mailbox navigation', () => {
 
 
         test ('Mailbox tabs functionality', async ({ page }) => { 
+
             const receivedPage = new ReceivedPage(page);
             await allure.step('should list all mails in "All" tab or show empty state', async () => {
                 await receivedPage.clickOnFilterTabAll();
@@ -41,7 +42,19 @@ test.describe('Mailbox navigation', () => {
                 await receivedPage.clickOnFilterTabArchived();
                 expect (await receivedPage.getArchivedMailList()).toBeTruthy();      
             });
+
+            await allure.step('should have different mail counts in each tab', async () => {
+                const allMailList = await receivedPage.getAllMailList();
+                const pendingMailList = await receivedPage.getPendingMaillist();
+                const archivedMailList = await receivedPage.getArchivedMailList();
+        
+                expect(allMailList.length).not.toBe(pendingMailList.length);
+                expect(allMailList.length).not.toBe(archivedMailList.length);
+                expect(pendingMailList.length).not.toBe(archivedMailList.length);
+            });
+
         });
+
 });
 
 test('Viewer Mode Functionality', async ({ page }) => {

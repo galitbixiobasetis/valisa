@@ -38,16 +38,20 @@ test.describe('Mailbox navigation', () => {
                 await receivedPage.clickOnFilterTabPending();
                 expect (await receivedPage.getPendingMaillist()).toBeTruthy();      
             });
+            const allMailList = await receivedPage.getAllMailList();
+            const pendingMailList = await receivedPage.getPendingMaillist();
+            const archivedMailList = await receivedPage.getArchivedMailList();
             await allure.step('should display archived emails in the "Archivados" tab', async () => {
                 await receivedPage.clickOnFilterTabArchived();
                 expect (await receivedPage.getArchivedMailList()).toBeTruthy();      
             });
 
             await allure.step('should have different mail counts in each tab', async () => {
-                const allMailList = await receivedPage.getAllMailList();
-                const pendingMailList = await receivedPage.getPendingMaillist();
-                const archivedMailList = await receivedPage.getArchivedMailList();
         
+                console.log('All mails:', allMailList.length);
+                console.log('Pending mails:', pendingMailList.length);
+                console.log('Archived mails:', archivedMailList.length);
+
                 expect(allMailList.length).not.toBe(pendingMailList.length);
                 expect(allMailList.length).not.toBe(archivedMailList.length);
                 expect(pendingMailList.length).not.toBe(archivedMailList.length);

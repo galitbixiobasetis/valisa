@@ -1,0 +1,3 @@
+All mails: 1
+Pending mails: 1
+Archived mails: 1

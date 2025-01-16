@@ -11,6 +11,7 @@ export class ReceivedPage {
     readonly filterTabPending: Locator;
     readonly filterTabArchived: Locator;
     readonly receivedTitle: Locator;
+    readonly emptyMailbox: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -20,6 +21,7 @@ export class ReceivedPage {
         this.filterTabPending = page.getByRole('button', { name: 'No gestionades' });
         this.filterTabArchived = page.getByRole('button', { name: 'Arxivades' });
         this.receivedTitle = page.getByRole('heading', { name: 'Safata d\'entrada' })
+        this.emptyMailbox = page.getByText('No hi ha valises amb els')
     }
  
     async validateReceivedTitle (){
@@ -27,6 +29,10 @@ export class ReceivedPage {
     }
     async validateURL(){
        await expect(this.page).toHaveURL(MAILBOX_URL, { timeout: 10000 });
+    }
+
+    async validateEmptyMailbox (){
+        await expect(this.emptyMailbox).toBeVisible()
     }
 
 

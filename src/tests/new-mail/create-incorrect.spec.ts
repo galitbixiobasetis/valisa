@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { NewMailPage } from '../../page-objects/new-mail-page';
-import { SidebarMenuComponent } from '../../page-objects/sidebar-menu-component';
+import * as allure from "allure-js-commons";
+import { NewMailPage } from '../../page-objects/pages/new-mail-page';
+import { SidebarMenuComponent } from '../../page-objects/components/sidebar-menu-component';
 import {TestFunctions, getIncorrectMailData } from '../../utils/test-functions';
  
 
@@ -14,74 +15,58 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('create unsusccesfully new mail', () => {
-    test('should fail when sending a new mail without filling required fields', async ({ page }) => {
-        const newMailPage = new NewMailPage(page);
- 
-        await newMailPage.sendNewMail();
-
-    });
-
-    test('should show error on step 1 when sending a new mail without filling required fields', async ({ page }) => {
+    test('should fail sending a new mail with empty required fields', async ({ page }) => {
+     
         const newMailPage = new NewMailPage(page);
   
         await newMailPage.sendNewMail();
 
         expect(await newMailPage.isErrorIconVisible()).toBeTruthy();
-    }
-    );
+    });
 
-    test('should show error on "for" field when sending a new mail without filling required fields', async ({ page }) => {
+    test('should not send email filling wrong required fields', async ({ page }) => {
         const newMailPage = new NewMailPage(page);
         const incorrectMailData = await getIncorrectMailData();
-        const perA = incorrectMailData[0].invalidMail.perA.message; // 
- 
-        await newMailPage.clickToField();
-        await newMailPage.fillToField(perA);   
 
+        const to = incorrectMailData[0].invalidMail.perA.message; 
+        const from = incorrectMailData[0].invalidMail.de.message;
+        const subject = incorrectMailData[0].invalidMail.assumpte.message;
+        const content = incorrectMailData[0].invalidMail.cos.message;
+    
+        await allure.step('to field | should fill required field with an unregistered mail', async () => {
+            await newMailPage.clickToField();
+            await newMailPage.fillToField(to);
+            await newMailPage.validateToFieldisFilled(to);
+        });
+    
+        await allure.step('from field | should fill required field', async () => {
+            await newMailPage.clickFromField();
+            await newMailPage.fillFromField(from);
+            await newMailPage.validateFromFieldisFilled(from);
+         });
+    
+        await allure.step('subject field | should fill required fields', async () => {
+            await newMailPage.clickSubjectField();
+            await newMailPage.fillSubjectField(subject);
+            await newMailPage.validateSubjectFieldisFilled(subject);
+        });
+    
+        await allure.step('content field | should fill required fields', async () => {
+            await newMailPage.clickContentField();
+            await newMailPage.fillContentField(content);
+            await newMailPage.validateContentFieldisFilled(subject);
+    });
+         
+        await allure.step('click on sending button and fail on sending mail', async () => {
+            await newMailPage.sendNewMail();
+            await page.waitForLoadState();
+            expect(await newMailPage.isErrorIconVisible()).toBeTruthy();
+            
+        });
+
+        await allure.step('stay at create page (do not redirect to sent page)', async () => {
+            await newMailPage.validateURL();  
+        });
         
-        await newMailPage.sendNewMail();
-
-        expect(await newMailPage.isErrorInputVisible());
-    }
-    );
- 
-    test('should show error on "from" field when sending a new mail without filling required fields', async ({ page }) => {
-        const newMailPage = new NewMailPage(page);
-        const incorrectMailData = await getIncorrectMailData();
-        const de = incorrectMailData[0].invalidMail.de.message;  
-
-        await newMailPage.clickFromField();
-        await newMailPage.fillFromField(de);
-
-        await newMailPage.sendNewMail();
-
-        expect(await newMailPage.isErrorInputVisible());
     });
-
-    test('should show error on "subject" field when sending a new mail without filling required fields', async ({ page }) => {
-        const newMailPage = new NewMailPage(page);
-        const incorrectMailData = await getIncorrectMailData();
-        const assumpte = incorrectMailData[0].invalidMail.assumpte.message; 
-
-        await newMailPage.clickSubjectField();
-        await newMailPage.fillSubjectField(assumpte);
-
-        await newMailPage.sendNewMail();
-
-        expect(await newMailPage.isErrorInputVisible());
-    });
-    test('should show error on "content" field when sending a new mail without filling required fields', async ({ page }) => {
-        const newMailPage = new NewMailPage(page);
-        const incorrectMailData = await getIncorrectMailData();
-        const content = incorrectMailData[0].invalidMail.cos.message; 
-
-        await newMailPage.clickContentField();
-        await newMailPage.fillContentField(content);
-
-        await newMailPage.sendNewMail();
-
-        expect(await newMailPage.isErrorInputVisible());
-    }
-    );
-
 });

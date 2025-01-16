@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export class TestFunctions {
+    
   static async goToUrl(page: Page, path: string = '/'): Promise<number> {
      let responseStatus: number | undefined;
 
@@ -39,7 +40,7 @@ export interface ValidMail {
  }
  
  export interface CorrectMailData {
-  invalidMail: InvalidMail;
+  validMail: ValidMail;
  }
  
  export async function getCorrectMailData(): Promise<CorrectMailData[]> {

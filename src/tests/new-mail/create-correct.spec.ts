@@ -1,9 +1,11 @@
-import { test, expect } from '@playwright/test';
-import { NewMailPage } from '../../page-objects/new-mail-page';
-import { SidebarMenuComponent } from '../../page-objects/sidebar-menu-component';
+import { test, expect, request } from '@playwright/test';
+import * as allure from "allure-js-commons";
+import { NewMailPage } from '../../page-objects/pages/new-mail-page';
+import { SidebarMenuComponent } from '../../page-objects/components/sidebar-menu-component';
 import {TestFunctions, getCorrectMailData } from '../../utils/test-functions';
-import { SENT_MAIL_URL } from '../../utils/config';
- 
+import { SentMailPage } from '../../page-objects/pages/sent-mail-page'; 
+import {   LANDING_PAGE } from '../../utils/config';
+  
 
 test.beforeEach(async ({ page }) => {
     await TestFunctions.goToUrl(page, '');
@@ -13,39 +15,73 @@ test.beforeEach(async ({ page }) => {
     await sidebarMenu.navigateToNewMail();
 
 });
-
+ 
 test.describe('create successfully new mail', () => {
-    test('should pass filling required fields', async ({ page }) => {
-        const newMailPage = new NewMailPage(page);
-        const correctMailData = await getCorrectMailData();
-        const to = correctMailData[0].validMail.perA.message; 
-        const from = correctMailData[0].validMail.de.message;
-        const subject = correctMailData[0].validMail.assumpte.message;
-        const content = correctMailData[0].validMail.cos.message;
 
+test('should send email after filling required fields', async ({ page }) => {
+    const newMailPage = new NewMailPage(page);
+    const sentMailPage = new SentMailPage(page);
+
+    const correctMailData = await getCorrectMailData();
+    
+    const from = correctMailData[0].validMail.de.message;
+    const subject = correctMailData[0].validMail.assumpte.message;
+    const content = correctMailData[0].validMail.cos.message;
+
+    await allure.step('to field | should select required field', async () => {
+        await newMailPage.selectFirstToFieldOption();
  
-        await newMailPage.clickToField();
-        await newMailPage.fillToField(to);   
+        await newMailPage.isToFieldChipVisible()
+    });
 
-        if (await newMailPage.isErrorInputVisible()) {
-            console.log('message should explain this error and not  "this field is required"');
-        }
-
+    await allure.step('from field | should fill required field', async () => {
         await newMailPage.clickFromField();
-        await newMailPage.fillFromField(from);
+        const fromField = await newMailPage.fillFromField(from);
 
-        await newMailPage.clickSubjectField();
-        await newMailPage.fillSubjectField(subject);
-
-        await newMailPage.clickContentField();
-        await newMailPage.fillContentField(content);
-
-        
-        await newMailPage.sendNewMail();
-
-        await expect(page.url()).toBe(SENT_MAIL_URL);
- 
-        await newMailPage.sendNewMail();
+        expect(fromField).not.toBe('');
+        await newMailPage.isToFieldChipVisible()
 
     });
+
+    await allure.step('subject field | should select required fields', async () => {
+        await newMailPage.clickSubjectField();
+        const subjectField = await newMailPage.fillSubjectField(subject);
+        expect(subjectField).not.toBe('ssss');
+
+     });
+
+    await allure.step('content field | should fill required fields', async () => {
+       const contentField = await newMailPage.fillContentField(content);
+        expect(contentField).not.toBe('');
+
+     });
+
+    await allure.step('intercept and validate API response status', async () => {
+
+    let apiResponseStatus: number |  undefined;
+    
+    await page.route(`${LANDING_PAGE}/api/valises/enviar`, (route) => {
+        route.continue();
+    });
+
+    const [response] = await Promise.all([
+        page.waitForResponse((res) => res.url().includes('/api/valises/enviar') && res.request().method() === 'PUT'),
+        newMailPage.sendNewMail(),
+    ]);
+
+    apiResponseStatus = response.status();
+    console.log('API Response Status:', apiResponseStatus);
+  
+         
+    expect(apiResponseStatus).toBe(201);
+   
+    });
+
+    await allure.step('validate redirection to sent mail page', async () => {
+   
+        await sentMailPage.validateURL(); 
+    });
+    
+ 
+});
 });

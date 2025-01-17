@@ -1,0 +1,21 @@
+Error testing  LambdaTest: TypeError: Cannot read properties of undefined (reading 'evaluate')
+    at teardownLambdaTest (/Users/galitbixio/Documents/proyectos/valisa/lambda-test/teardown.ts:12:17)
+    at /Users/galitbixio/Documents/proyectos/valisa/src/tests/api/review/review-no-data.spec.ts:20:27
+    at /Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/fixtureRunner.js:250:13
+    at /Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/testInfo.js:286:17
+    at TimeoutManager.withRunnable (/Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/timeoutManager.js:64:34)
+    at TestInfoImpl._runAsStage (/Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/testInfo.js:284:34)
+    at FixtureRunner.resolveParametersAndRunFunction (/Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/fixtureRunner.js:246:20)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at /Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/workerMain.js:589:11
+    at /Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/testInfo.js:286:11
+    at TimeoutManager.withRunnable (/Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/timeoutManager.js:52:27)
+    at TestInfoImpl._runAsStage (/Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/testInfo.js:284:7)
+    at WorkerMain._runEachHooksForSuites (/Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/workerMain.js:582:9)
+    at /Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/workerMain.js:380:38
+    at /Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/testInfo.js:286:11
+    at TimeoutManager.withRunnable (/Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/timeoutManager.js:52:27)
+    at TestInfoImpl._runAsStage (/Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/testInfo.js:284:7)
+    at WorkerMain._runTest (/Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/workerMain.js:355:5)
+    at WorkerMain.runTestGroup (/Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/worker/workerMain.js:205:11)
+    at process.<anonymous> (/Users/galitbixio/Documents/proyectos/valisa/node_modules/playwright/lib/common/process.js:95:22)

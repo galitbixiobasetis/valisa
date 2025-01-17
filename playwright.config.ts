@@ -1,11 +1,12 @@
 import { defineConfig, devices } from '@playwright/test';
 import { LANDING_PAGE } from '../valisa/src/utils/config';
+import { capabilities } from './lambda-test/capabilities';
 
-/**
+
+ /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
 // import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
@@ -51,6 +52,20 @@ export default defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
+   
+      {
+      name: 'LambdaTest',
+      use: {
+        browserName: capabilities.browserName as 'chromium' | 'firefox' | 'webkit',  
+        connectOptions: {
+          wsEndpoint: `wss://cdp.lambdatest.com/playwright?capabilities=${encodeURIComponent(
+            JSON.stringify(capabilities)
+          )}`,
+        },
+      },
+    }
+    
+      
 
     /* Test against mobile viewports. */
     // {

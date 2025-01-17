@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { Browser, Page, test } from '@playwright/test';
 import { ReceivedPage } from '../../page-objects/pages/received-page';
 import { TestFunctions } from '../../utils/test-functions';
 import { SidebarMenuComponent } from '../../page-objects/components/sidebar-menu-component';
@@ -11,10 +11,28 @@ import { DelaysPage } from '../../page-objects/pages/delays-page';
 import { HighlightedPage } from '../../page-objects/pages/highlighted-page';
 import { ConfigPage } from '../../page-objects/pages/config-page';
 
- 
-test.beforeEach(async ({ page }) => {
+import { setupBrowser } from '../../../lambda-test/global-setup';
+import { teardownLambdaTest } from '../../../lambda-test/teardown';
+
+let browser: Browser;
+let page: Page;
+
+test.beforeAll(async () => {
+    browser = await setupBrowser();
+  });
+  
+  test.beforeEach(async () => {
+    page = await browser.newPage();
+  });
+  
+  test.afterEach(async () => {
+    const outcome = test.info().status;
+    const remark = outcome === 'passed' ? 'Test passed successfully' : 'Test failed';
+    await teardownLambdaTest(page, browser, outcome as 'passed' | 'failed', remark);
     await TestFunctions.goToUrl(page, '');  
-});
+  }); 
+
+ 
 
 test.describe('Lateral menu navigation', () => {
 

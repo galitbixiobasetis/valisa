@@ -5,7 +5,7 @@ import { SidebarMenuComponent } from "../../../page-objects/components/sidebar-m
 import { TestFunctions } from "../../../utils/test-functions";
 import * as allure from "allure-js-commons";
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, browser }) => {
   const sidebarMenuComponent = new SidebarMenuComponent(page);
   
     await TestFunctions.goToUrl(page, '');

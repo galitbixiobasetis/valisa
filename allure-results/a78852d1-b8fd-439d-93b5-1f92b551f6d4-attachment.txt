@@ -1,0 +1,6 @@
+Error de conexión: browserType.connect: Unauthorized, either Username or AccessKey is invalid.
+    at /Users/galitbixio/Documents/proyectos/valisa/lambda-test/capabilities.ts:21:38
+    at Object.<anonymous> (/Users/galitbixio/Documents/proyectos/valisa/lambda-test/capabilities.ts:29:4)
+    at Object.<anonymous> (/Users/galitbixio/Documents/proyectos/valisa/playwright.config.ts:3:1) {
+  name: 'Internal Server Error'
+}
